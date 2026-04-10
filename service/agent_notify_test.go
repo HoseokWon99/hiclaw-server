@@ -1,4 +1,4 @@
-package agent
+package service
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 	"hiclaw-server/core"
 )
 
-func TestClient_SendMessage(t *testing.T) {
+func TestAgentService_Notify(t *testing.T) {
 	var received core.Message
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -21,10 +21,10 @@ func TestClient_SendMessage(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := NewClient(srv.URL, "/webhook/chat")
+	s := NewAgentService(srv.URL, "/webhook/chat")
 	msg := &core.Message{ID: "m1", Content: []*core.Part{{Data: "hello"}}, Timestamp: time.Now()}
 
-	if err := c.SendMessage(msg); err != nil {
+	if err := s.Notify(msg); err != nil {
 		t.Fatal(err)
 	}
 	if received.ID != "m1" {
@@ -32,9 +32,9 @@ func TestClient_SendMessage(t *testing.T) {
 	}
 }
 
-func TestClient_Unreachable(t *testing.T) {
-	c := NewClient("http://127.0.0.1:1", "/webhook/chat")
-	err := c.SendMessage(&core.Message{ID: "m1"})
+func TestAgentService_Notify_Unreachable(t *testing.T) {
+	s := NewAgentService("http://127.0.0.1:1", "/webhook/chat")
+	err := s.Notify(&core.Message{ID: "m1"})
 	if err == nil {
 		t.Error("expected error for unreachable agent")
 	}

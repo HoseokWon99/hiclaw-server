@@ -7,11 +7,11 @@ import (
 
 	"hiclaw-server/core"
 
-	"tailscale.com/client/tailscale"
+	"tailscale.com/client/local"
 )
 
 type Discovery struct {
-	client    tailscale.LocalClient
+	client    local.Client
 	deviceSvc core.DeviceService
 	agentName string
 }

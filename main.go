@@ -9,7 +9,6 @@ import (
 	"syscall"
 	"time"
 
-	"hiclaw-server/agent"
 	"hiclaw-server/config"
 	"hiclaw-server/core"
 	"hiclaw-server/hub"
@@ -37,11 +36,11 @@ func main() {
 
 	// Infrastructure
 	h := hub.New()
-	agentClient := agent.NewClient("http://"+cfg.AgentDeviceName, cfg.AgentWebhookPath)
 
 	// Service layer (implements core interfaces, depends on core store interfaces)
 	deviceSvc := service.NewDeviceService(deviceStore)
-	chatSvc := service.NewChatService(chatStore, h, agentClient)
+	agentSvc := service.NewAgentService("http://"+cfg.AgentDeviceName, cfg.AgentWebhookPath)
+	chatSvc := service.NewChatService(chatStore, h, agentSvc)
 
 	// Tailscale discovery (depends on core.DeviceService)
 	ctx, cancel := context.WithCancel(context.Background())

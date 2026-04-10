@@ -24,3 +24,7 @@ graph LR;
 
 - Language: Go
 - Database: CouchBase (chat storage), SQLite (devices storage)
+
+## Rules
+
+

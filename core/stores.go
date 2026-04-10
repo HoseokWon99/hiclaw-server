@@ -1,4 +1,4 @@
-// core/stores.go
+// Package core core/stores.go
 package core
 
 type ChatStore interface {
