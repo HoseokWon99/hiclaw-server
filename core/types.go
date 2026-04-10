@@ -1,13 +1,11 @@
 package core
 
-import (
-	"net"
-	"time"
-)
+import "time"
 
 type Device struct {
-	IP   *net.IPAddr `json:"ip"`
-	Name string      `json:"name"`
+	IP      string `json:"ip"`
+	Name    string `json:"name"`
+	IsAgent bool   `json:"is_agent"`
 }
 
 type Part struct {
